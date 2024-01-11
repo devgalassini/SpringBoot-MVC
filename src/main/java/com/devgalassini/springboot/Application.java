@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.devgalassini.springboot.*"})
+@ComponentScan(basePackages = {"com.*"})
 @EntityScan(basePackages = "com.devgalassini.springboot.model")
 public class Application {
 
