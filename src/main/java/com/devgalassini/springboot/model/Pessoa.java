@@ -7,11 +7,13 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 public class Pessoa implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Getter
@@ -25,4 +27,7 @@ public class Pessoa implements Serializable {
     @Getter
     @Setter
     private String sobrenome;
+    @Setter
+    @Getter
+    private int idade;
 }
