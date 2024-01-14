@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface PessoaRepository  extends CrudRepository <Pessoa, Long> {
+public interface PessoaRepository extends CrudRepository<Pessoa, Long> {
     @Query("SELECT p FROM Pessoa p WHERE p.nome like %?1% ")
     List<Pessoa> findPessoaByName(String nome);
 }
