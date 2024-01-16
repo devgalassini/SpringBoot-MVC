@@ -1,10 +1,9 @@
 package com.devgalassini.springboot.model;
 
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,17 +18,21 @@ public class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Getter
     @Setter
     private String nome;
+
     @Getter
     @Setter
     private String sobrenome;
+
     @Setter
     @Getter
     private int idade;
+
     @Setter
     @Getter
     @OneToMany(mappedBy = "pessoa")
-    private List<Telefone>telefones;
+    private List<Telefone> telefones;
 }
