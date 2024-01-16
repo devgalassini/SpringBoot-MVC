@@ -1,19 +1,17 @@
 package com.devgalassini.springboot.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serial;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Pessoa implements Serializable {
 
-    @Serial
+
     private static final long serialVersionUID = 1L;
 
     @Getter
@@ -30,4 +28,8 @@ public class Pessoa implements Serializable {
     @Setter
     @Getter
     private int idade;
+    @Setter
+    @Getter
+    @OneToMany(mappedBy = "pessoa")
+    private List<Telefone>telefones;
 }
