@@ -1,7 +1,9 @@
 package com.devgalassini.springboot.controller;
 
 import com.devgalassini.springboot.model.Pessoa;
+import com.devgalassini.springboot.model.Telefone;
 import com.devgalassini.springboot.repository.PessoaRepository;
+import com.devgalassini.springboot.repository.TelefoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,40 +13,44 @@ import java.util.Optional;
 
 @Controller
 public class PessoaController {
+
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    @GetMapping("/cadastropessoa")
+    @Autowired
+    private TelefoneRepository telefoneRepository;
+
+    @RequestMapping(method = RequestMethod.GET, value = "/cadastropessoa")
     public ModelAndView inicio() {
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
         modelAndView.addObject("pessoaobj", new Pessoa());
-        Iterable<Pessoa> pessoaIt = pessoaRepository.findAll();
-        modelAndView.addObject("pessoas", pessoaIt);
+        Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
+        modelAndView.addObject("pessoas", pessoasIt);
         return modelAndView;
     }
 
-    @PostMapping("**/salvarpessoa")
+    @RequestMapping(method = RequestMethod.POST, value = "**/salvarpessoa")
     public ModelAndView salvar(Pessoa pessoa) {
         pessoaRepository.save(pessoa);
 
         ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");
-        Iterable<Pessoa> pessoaIt = pessoaRepository.findAll();
-        andView.addObject("pessoas", pessoaIt);
+        Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
+        andView.addObject("pessoas", pessoasIt);
         andView.addObject("pessoaobj", new Pessoa());
-        return andView;
 
+        return andView;
 
     }
 
-    @GetMapping("listapessoas")
+    @RequestMapping(method = RequestMethod.GET, value = "/listapessoas")
     public ModelAndView pessoas() {
         ModelAndView andView = new ModelAndView("cadastro/cadastropessoa");
-        Iterable<Pessoa> pessoaIt = pessoaRepository.findAll();
-        andView.addObject("pessoas", pessoaIt);
+        Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
+        andView.addObject("pessoas", pessoasIt);
         andView.addObject("pessoaobj", new Pessoa());
-
         return andView;
     }
+
 
     @GetMapping("/editarpessoa/{idpessoa}")
     public ModelAndView editar(@PathVariable("idpessoa") Long idpessoa) {
@@ -54,7 +60,9 @@ public class PessoaController {
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
         modelAndView.addObject("pessoaobj", pessoa.get());
         return modelAndView;
+
     }
+
 
     @GetMapping("/removerpessoa/{idpessoa}")
     public ModelAndView excluir(@PathVariable("idpessoa") Long idpessoa) {
@@ -64,7 +72,6 @@ public class PessoaController {
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
         modelAndView.addObject("pessoas", pessoaRepository.findAll());
         modelAndView.addObject("pessoaobj", new Pessoa());
-
         return modelAndView;
 
     }
@@ -77,6 +84,7 @@ public class PessoaController {
         return modelAndView;
     }
 
+
     @GetMapping("/telefones/{idpessoa}")
     public ModelAndView telefones(@PathVariable("idpessoa") Long idpessoa) {
 
@@ -85,5 +93,22 @@ public class PessoaController {
         ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
         modelAndView.addObject("pessoaobj", pessoa.get());
         return modelAndView;
+
     }
+
+    @PostMapping("**/addfonePessoa/{pessoaid}")
+    public ModelAndView addFonePessoa(Telefone telefone,
+                                      @PathVariable("pessoaid") Long pessoaid) {
+
+        Pessoa pessoa = pessoaRepository.findById(pessoaid).get();
+        telefone.setPessoa(pessoa);
+
+        telefoneRepository.save(telefone);
+
+
+        ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
+        modelAndView.addObject("pessoaobj", pessoa);
+        return modelAndView;
+    }
+
 }
