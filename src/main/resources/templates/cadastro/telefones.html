@@ -52,6 +52,14 @@
 
         </div>
 
+        <table class="striped">
+            <tr th:each="fone : ${telefone}">
+                <td th:text="${fone.numero}">
+                <td th:text="${fone.tipo}">
+                </td>
+            </tr>
+        </table>
+
 
         <a class="waves-effect waves-light btn" href="/cadastropessoa">Voltar</a>
         <script type="text/javascript" src="/materialize/js/materialize.js"></script>

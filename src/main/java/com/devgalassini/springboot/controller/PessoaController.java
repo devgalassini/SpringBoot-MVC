@@ -86,12 +86,13 @@ public class PessoaController {
 
 
     @GetMapping("/telefones/{idpessoa}")
-    public ModelAndView telefones(@PathVariable("idpessoa") Long idpessoa) {
+    public ModelAndView telefones(@PathVariable("idpessoa") Long pessoaid) {
 
-        Optional<Pessoa> pessoa = pessoaRepository.findById(idpessoa);
+        Optional<Pessoa> pessoa = pessoaRepository.findById(pessoaid);
 
         ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
         modelAndView.addObject("pessoaobj", pessoa.get());
+        modelAndView.addObject("telefone", telefoneRepository.getTelefones(pessoaid));
         return modelAndView;
 
     }
@@ -108,6 +109,7 @@ public class PessoaController {
 
         ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
         modelAndView.addObject("pessoaobj", pessoa);
+        modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoaid));
         return modelAndView;
     }
 
