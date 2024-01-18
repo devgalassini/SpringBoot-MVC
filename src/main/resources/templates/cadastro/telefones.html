@@ -56,6 +56,7 @@
             <tr th:each="fone : ${telefone}">
                 <td th:text="${fone.numero}">
                 <td th:text="${fone.tipo}">
+                <td><a th:href="@{/removertelefone/{idtelefone}(idtelefone=${fone.id})}">Excluir</a></td>
                 </td>
             </tr>
         </table>

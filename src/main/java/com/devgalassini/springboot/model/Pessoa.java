@@ -33,6 +33,6 @@ public class Pessoa implements Serializable {
 
     @Setter
     @Getter
-    @OneToMany(mappedBy = "pessoa")
+    @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Telefone> telefones;
 }
