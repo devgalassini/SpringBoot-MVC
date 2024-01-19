@@ -1,22 +1,27 @@
 package com.devgalassini.springboot.controller;
 
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.devgalassini.springboot.model.Pessoa;
 import com.devgalassini.springboot.model.Telefone;
 import com.devgalassini.springboot.repository.PessoaRepository;
 import com.devgalassini.springboot.repository.TelefoneRepository;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class PessoaController{
@@ -116,17 +121,39 @@ public class PessoaController{
 
         ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
         modelAndView.addObject("pessoaobj", pessoa.get());
-        modelAndView.addObject("msgErro", "");
+        modelAndView.addObject("msg", new ArrayList<String>());
         modelAndView.addObject("telefones", telefoneRepository.getTelefones(idpessoa));
         return modelAndView;
 
     }
 
     @PostMapping("**/addfonePessoa/{pessoaid}")
-    public ModelAndView addFonePessoa(Telefone telefone,
+    public ModelAndView addFonePessoa(Telefone telefone ,
                                       @PathVariable("pessoaid") Long pessoaid) {
 
         Pessoa pessoa = pessoaRepository.findById(pessoaid).get();
+
+        if(telefone != null && telefone.getNumero().isEmpty()
+                || telefone.getTipo().isEmpty()) {
+
+            ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
+            modelAndView.addObject("pessoaobj", pessoa);
+            modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoaid));
+
+            List<String> msg = new ArrayList<String>();
+            if (telefone.getNumero().isEmpty()) {
+                msg.add("Numero deve ser informado");
+            }
+
+            if (telefone.getTipo().isEmpty()) {
+                msg.add("Tipo deve ser informado");
+            }
+            modelAndView.addObject("msg", msg);
+
+            return modelAndView;
+
+        }
+
         ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
 
         telefone.setPessoa(pessoa);
